@@ -1,0 +1,23 @@
+[
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "Hey, My name is Akhil Bellamkonda. I am a current freshman in Plainfield. You can contact me with akhilbelllamkonda@gmail.com. Github account:https://github.com/akhilbelllamkonda\nMy project is about the rise of crimes occuring between males and females in Mesa, Arizona. Github Repo: https://github.com/akhilbelllamkonda/Mesa_Statistics\nThis project was created as a part of Kane’s Data Science Bootcamp. Link: https://bootcamp.davidkane.info/"
+  },
+  {
+    "objectID": "model.html",
+    "href": "model.html",
+    "title": "Statistical Info",
+    "section": "",
+    "text": "Family: bernoulli \n  Links: mu = logit \nFormula: arrest_made ~ subject_sex + date \n   Data: df1 (Number of observations: 157015) \n  Draws: 4 chains, each with iter = 1000; warmup = 500; thin = 1;\n         total post-warmup draws = 2000\n\nRegression Coefficients:\n                 Estimate  Est.Error   l-95% CI   u-95% CI Rhat Bulk_ESS\nIntercept          -21.08      11.59     -52.24     -11.73 1.02      168\nsubject_sexTRUE   -561.11     755.64   -2637.37       1.03 1.08       56\ndateTRUE        791279.10 1494350.91 -159306.77 4330463.05 2.13        5\n                Tail_ESS\nIntercept            319\nsubject_sexTRUE      165\ndateTRUE              24\n\nDraws were sampled using sampling(NUTS). For each parameter, Bulk_ESS\nand Tail_ESS are effective sample size measures, and Rhat is the potential\nscale reduction factor on split chains (at convergence, Rhat = 1)."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Mesa Statistics",
+    "section": "",
+    "text": "The rate of arrests in Mesa, Arizona, varies significantly based on the subject’s sex. We used data from the Stanford Open Policing Project, specifically the Mesa dataset, which includes information on police stops conducted by the Mesa Police Department. The dataset provides records from January 1, 2011, to December 31, 2017, detailing variables like the subject’s sex, the date of the stop, and whether an arrest was made. We employed a Bayesian regression model where the outcome variable is whether an arrest was made, modeled as a categorical response influenced by the subject’s sex and the date of the police stop. This model allows us to quantify the relationship between gender and arrest probability while accounting for temporal patterns. Our analysis shows that males are statistically more likely to be arrested than females, with a predicted arrest probability that is 15% higher on average. ."
+  }
+]
