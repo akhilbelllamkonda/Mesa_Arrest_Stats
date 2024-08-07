@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Statistical Info – Mesa Arrests in 2011-2017</title>
+<title>Model – Mesa Arrests in 2011-2017</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -93,12 +93,16 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./about.html"> 
-<span class="menu-text">About</span></a>
-  </li>  
-  <li class="nav-item">
     <a class="nav-link active" href="./model.html" aria-current="page"> 
 <span class="menu-text">Model</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./source.html"> 
+<span class="menu-text">Sources</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./about.html"> 
+<span class="menu-text">About</span></a>
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
@@ -119,7 +123,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Statistical Info</h1>
+<h1 class="title">Model</h1>
 </div>
 
 
@@ -140,24 +144,27 @@ ul.task-list li input[type="checkbox"] {
 <div class="cell-output cell-output-stdout">
 <pre><code> Family: bernoulli 
   Links: mu = logit 
-Formula: arrest_made ~ subject_sex + date 
-   Data: df1 (Number of observations: 157015) 
+Formula: arrest_made ~ subject_sex + as.numeric(date) 
+   Data: clean_data (Number of observations: 154640) 
   Draws: 4 chains, each with iter = 1000; warmup = 500; thin = 1;
          total post-warmup draws = 2000
 
 Regression Coefficients:
-                 Estimate  Est.Error   l-95% CI   u-95% CI Rhat Bulk_ESS
-Intercept          -21.08      11.59     -52.24     -11.73 1.02      168
-subject_sexTRUE   -561.11     755.64   -2637.37       1.03 1.08       56
-dateTRUE        791279.10 1494350.91 -159306.77 4330463.05 2.13        5
-                Tail_ESS
-Intercept            319
-subject_sexTRUE      165
-dateTRUE              24
+                Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+Intercept           3.20      2.82    -2.06     5.92 1.54        7       23
+subject_sexmale     0.76      0.35     0.48     1.37 1.60        7       11
+as.numericdate     -0.00      0.00    -0.00    -0.00 1.59        7       11
 
 Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
 and Tail_ESS are effective sample size measures, and Rhat is the potential
 scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="model_files/figure-html/model-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 
