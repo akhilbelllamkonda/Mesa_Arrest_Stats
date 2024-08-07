@@ -1,0 +1,25 @@
+---
+title: Sources
+execute:
+  echo: false
+---
+
+This data set is from Stanford Open Policing Project.
+
+This data is about the arrests made between different variables. The 
+variables I decided to use were subject_sex, arrest_made, and date.
+There were a total of 12 colunms which included subject_age, subject_race, and
+etc.
+
+
+```{r}
+#| message: false
+#| warning: false
+library(tidyverse)
+mesa_data <- read_csv('/Users/chittibellamkonda/Downloads/az_mesa_2023_01_26.csv')
+```
+
+```{r}
+glimpse(mesa_data)
+```
+

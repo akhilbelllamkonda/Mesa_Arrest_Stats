@@ -1,0 +1,36 @@
+--- 
+title: Model
+execute: 
+  echo: false
+---  
+```{r}
+#| label: setup 
+#| message: false 
+#| warning: false
+library(tidyverse) 
+library(brms) 
+library(tidybayes)
+mesa_data <- read_csv('/Users/chittibellamkonda/Downloads/az_mesa_2023_01_26.csv')
+  clean_data <- mesa_data |> mutate(
+    date = as.Date(date, format = "%Y-%m-%d"), 
+    year = year(date)  # Fixed misplaced 'date,' causing issues
+  ) |>
+  filter(!is.na(subject_sex))
+```
+
+```{r}
+#| label: model 
+#| cache: true 
+#| warning: false
+df1 <- is.na(mesa_data)
+ brm1 <- brm(data = clean_data, 
+ formula =  arrest_made ~ subject_sex + as.numeric(date),
+family = bernoulli(),
+silent = 2,
+  refresh = 0,
+     iter = 1000,    # Set number of iterations (default is 2000)
+    chains = 4,     # Number of Markov Chains (default is 4)
+     seed = 13)
+ write_rds(brm1, "data/brm1.rds")
+```
+

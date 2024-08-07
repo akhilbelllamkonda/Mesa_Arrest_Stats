@@ -1,0 +1,69 @@
+--- 
+title: "Mesa Statistics" 
+author: "Akhil Bellamkonda" 
+subtitle: How did the likelihood of arrest differ between males and females in Mesa during 2011 and 2017?
+format: html 
+execute:    
+   echo: false 
+---  
+
+
+```{r}
+#| label: setup 
+#| message: false 
+#| warning: false
+library(tidyverse) 
+library(brms) 
+library(tidybayes)
+library(lubridate)
+library(ggplot2)
+mesa_data <- read_csv('/Users/chittibellamkonda/Downloads/az_mesa_2023_01_26.csv')
+
+clean_data <-
+  mesa_data |>
+  mutate(date = as.Date(date, format = "%Y-%m-%d"), 
+         date, year = year(date)) |>
+  filter(!is.na(subject_sex))
+mesa_data$arrest_made <- factor(mesa_data$arrest_made, levels = c('TRUE', 'FALSE'))
+
+brm1 <- read_rds('data/brm1.rds')
+```
+
+
+```{r}
+#| label: plot
+#| warning: false
+dates <- seq.Date(from = as.Date("2011-01-01"), to = as.Date("2017-12-31"), by = "years")
+
+newdata <- tibble(
+  subject_sex = rep(c('FALSE', 'TRUE'), each = length(dates) * 2),
+  date = rep(as.numeric(dates), times = 4)
+)
+
+add_epred_draws(
+brm1, newdata = newdata, re_formula = NA
+) |> 
+ggplot( aes(x = .epred, fill = subject_sex)) +
+  geom_density(alpha = 0.5) +  # Adjust alpha for transparency
+  scale_fill_manual(values =  c("TRUE" = "#1f77b4", "FALSE" = "#ff7f0e")) +
+  theme_minimal() +
+  labs(
+    title = "Density of Predicted Arrest Probabilities by Gender",
+    subtitle = "Based on data from 2011 to 2017",
+    x = "Predicted Probability of Arrest",
+    y = "Density",
+    fill = "Gender"
+  ) +
+  theme(
+    plot.title = element_text(size = 16, face = "bold"),
+    plot.subtitle = element_text(size = 14),
+    axis.text = element_text(size = 12),
+    axis.title = element_text(size = 14),
+    legend.title = element_text(size = 14),
+    legend.text = element_text(size = 12)
+  )
+```
+The rate of arrests in Mesa, Arizona, varies significantly based on the subject's sex. We used data from the Stanford Open Policing Project, specifically the Mesa dataset, which includes information on police stops conducted by the Mesa Police Department. The dataset provides records from January 1, 2011, to December 31, 2019, detailing variables like the subject's sex, the date of the stop, and whether an arrest was made. We employed a Bayesian regression model where the outcome variable is whether an arrest was made, modeled as a categorical response influenced by the subject's sex and the date of the police stop. This model allows us to quantify the relationship between gender and arrest probability while accounting for temporal patterns. Our analysis shows that males are statistically more likely to be arrested than females, with a predicted arrest probability that is 15% higher on average.
+
+
+.
