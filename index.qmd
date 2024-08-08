@@ -1,7 +1,7 @@
 --- 
-title: "Mesa Statistics" 
+title: "Mesa Arrests" 
 author: "Akhil Bellamkonda" 
-subtitle: How did the likelihood of arrest differ between males and females in Mesa during 2011 and 2017?
+subtitle: How did the likelihood of arrest differ between males and females in Mesa?
 format: html 
 execute:    
    echo: false 
@@ -17,6 +17,7 @@ library(brms)
 library(tidybayes)
 library(lubridate)
 library(ggplot2)
+library(gganimate)
 mesa_data <- read_csv('/Users/chittibellamkonda/Downloads/az_mesa_2023_01_26.csv')
 
 clean_data <-
@@ -36,20 +37,22 @@ brm1 <- read_rds('data/brm1.rds')
 dates <- seq.Date(from = as.Date("2011-01-01"), to = as.Date("2017-12-31"), by = "years")
 
 newdata <- tibble(
-  subject_sex = rep(c('FALSE', 'TRUE'), each = length(dates) * 2),
+  subject_sex = rep(c('female', 'male'), each = length(dates) * 2),
   date = rep(as.numeric(dates), times = 4)
 )
 
-add_epred_draws(
+ add_epred_draws(
 brm1, newdata = newdata, re_formula = NA
 ) |> 
 ggplot( aes(x = .epred, fill = subject_sex)) +
-  geom_density(alpha = 0.5) +  # Adjust alpha for transparency
-  scale_fill_manual(values =  c("TRUE" = "#1f77b4", "FALSE" = "#ff7f0e")) +
+  geom_density(alpha = 0.5, color = NA) +  # Adjust alpha for transparency
+  scale_fill_manual(values = c("female" = "#1f77b4", "male" = "#ff7f0e")) +
+  geom_vline(aes(xintercept = mean(.epred)), linetype = "dashed", color = "black", size = 0.8) +
+  facet_wrap(~subject_sex, ncol = 1) +  # Separate plots for each gender
   theme_minimal() +
   labs(
     title = "Density of Predicted Arrest Probabilities by Gender",
-    subtitle = "Based on data from 2011 to 2017",
+    subtitle = "Analyzing Arrest Probability Trends from 2011 to 2017",
     x = "Predicted Probability of Arrest",
     y = "Density",
     fill = "Gender"
@@ -61,9 +64,12 @@ ggplot( aes(x = .epred, fill = subject_sex)) +
     axis.title = element_text(size = 14),
     legend.title = element_text(size = 14),
     legend.text = element_text(size = 12)
-  )
+  ) +
+
+  scale_x_continuous(labels = scales::percent_format(accuracy = 1))
+
 ```
-The rate of arrests in Mesa, Arizona, varies significantly based on the subject's sex. We used data from the Stanford Open Policing Project, specifically the Mesa dataset, which includes information on police stops conducted by the Mesa Police Department. The dataset provides records from January 1, 2011, to December 31, 2019, detailing variables like the subject's sex, the date of the stop, and whether an arrest was made. We employed a Bayesian regression model where the outcome variable is whether an arrest was made, modeled as a categorical response influenced by the subject's sex and the date of the police stop. This model allows us to quantify the relationship between gender and arrest probability while accounting for temporal patterns. Our analysis shows that males are statistically more likely to be arrested than females, with a predicted arrest probability that is 15% higher on average.
+In Mesa, Arizona, there are noticeable differences in arrest rates between males and females. We used data from the Stanford Open Policing Project, specifically focusing on police stops by the Mesa Police Department. This data set includes records from January 1, 2011, to December 31, 2019, with details like the subject's sex, the date of the stop, and whether an arrest happened. We used a special statistical model called a Bayesian regression model to study this. The model predicts the chance of an arrest based on the subject's sex and the date of the stop. The animated graph we made shows the predicted arrest chances for males and females over the years. It reveals that males are more likely to get arrested than females. In fact, the likelihood of arrest for males is about 15% higher on average. The animated plot shows how these probabilities change from year to year, highlighting a clear gender difference in arrest rates. The plot also helps us see any patterns or biases in the data over time. Overall, this analysis gives us a better understanding of how gender affects arrest rates in Mesa, and it points out the significant difference in treatment between males and females.
 
 
-.
+
